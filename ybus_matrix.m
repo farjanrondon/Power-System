@@ -1,7 +1,4 @@
 
-% ybus matrix file
-%
-
 function [A_matrix, Y_primitive, YBUS] = ybus_matrix(bus_table, lines_table, trx_table, shunt_table)
     
     % nodal incidence matrix (A_matrix)
@@ -37,8 +34,6 @@ function [A_matrix, Y_primitive, YBUS] = ybus_matrix(bus_table, lines_table, trx
             A_matrix = [A_matrix; eye(n)];
         end
     end
-    %
-
 
     % primitive admitance matrix (Y_primitive)
     Y_primitive = zeros(sum(linspace(1, n, n)));
@@ -49,7 +44,6 @@ function [A_matrix, Y_primitive, YBUS] = ybus_matrix(bus_table, lines_table, trx
     while true
 
         for d = b+1:1:n
-
             lines_addsup = [
                 lines_table(lines_table.bus_i==b & lines_table.bus_j==d,:);
                 lines_table(lines_table.bus_i==d & lines_table.bus_j==b,:)
@@ -65,19 +59,15 @@ function [A_matrix, Y_primitive, YBUS] = ybus_matrix(bus_table, lines_table, trx
             sum_var = sum(lines_addsup.Y_lines) + sum(trx_addsup.Y_ij);
             Y_primitive(idx, idx) = Y_primitive(idx, idx) + sum_var;
             idx = idx + 1;
-
         end
 
         b = b + 1;
-
         if b == n
             break;
         end
     end
     
-
     % shunt elements (between bus and ground) contribution to Y_primitive
-
     for e = 1:1:n
         % lines shunts adds up
         shunt_lines = [

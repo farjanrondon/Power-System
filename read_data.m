@@ -1,7 +1,4 @@
 
-% read data file
-%
-
 function [parameters_c1, parameters_c2, parameters_c3, bus_table, lines_table, trx_table, shunt_table] = read_data(name)
     
     % Parameters Sheet
@@ -26,14 +23,12 @@ function [parameters_c1, parameters_c2, parameters_c3, bus_table, lines_table, t
     % order: Verification to apply analysis, Heun, RK4.
     %
     
-    
     % Bus Sheet
     bus_table = readtable(name, "Sheet", "BUS");
     % The angles needs to be expresed in radians
     bus_table.Properties.VariableNames{8} = 'bus_angle_radians';
     bus_table.bus_angle_radians = bus_table.bus_angle_radians .* pi ./ 180;
     %
-    
     
     % Lines Sheet
     lines_table = readtable(name, "Sheet", "LINES");
@@ -48,7 +43,6 @@ function [parameters_c1, parameters_c2, parameters_c3, bus_table, lines_table, t
     lines_table.Y_shunt = Y_shunt;
     %
     
-
     % TRX Sheet
     trx_table = readtable(name, "Sheet", "TRX");
     
@@ -69,8 +63,7 @@ function [parameters_c1, parameters_c2, parameters_c3, bus_table, lines_table, t
         % electrical system.
     end
     %
-
-
+    
     % SHUNT_ELEMENTS Sheet
     shunt_table = readtable(name, "Sheet", "SHUNT_ELEMENTS");
 
