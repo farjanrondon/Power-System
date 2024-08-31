@@ -9,8 +9,7 @@ function [A_matrix, Y_primitive, YBUS] = ybus_matrix(bus_table, lines_table, trx
     % M_aux is an auxiliar matrix
 
     A_num_rows = sum(linspace(1, n, n));
-    A_num_colm = n;
-    % This numbers define the shape of the matrix to determinate
+    % "A" define the shape of the matrix to determinate
 
     for a = linspace(1, A_num_rows, A_num_rows)
         while n-a > 0
@@ -44,7 +43,6 @@ function [A_matrix, Y_primitive, YBUS] = ybus_matrix(bus_table, lines_table, trx
     while true
 
         for d = b+1:1:n
-
             lines_addsup = [
                 lines_table(lines_table.bus_i==b & lines_table.bus_j==d,:);
                 lines_table(lines_table.bus_i==d & lines_table.bus_j==b,:)
@@ -60,7 +58,6 @@ function [A_matrix, Y_primitive, YBUS] = ybus_matrix(bus_table, lines_table, trx
             sum_var = sum(lines_addsup.Y_lines) + sum(trx_addsup.Y_ij);
             Y_primitive(idx, idx) = Y_primitive(idx, idx) + sum_var;
             idx = idx + 1;
-
         end
 
         b = b + 1;
@@ -70,7 +67,6 @@ function [A_matrix, Y_primitive, YBUS] = ybus_matrix(bus_table, lines_table, trx
     end
     
     % shunt elements (between bus and ground) contribution to Y_primitive
-
     for e = 1:1:n
         % lines shunts adds up
         shunt_lines = [

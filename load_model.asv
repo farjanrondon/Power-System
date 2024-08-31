@@ -1,0 +1,16 @@
+
+function [P_esp, Q_esp, S_esp] = load_model(bus_table)
+    
+    % P
+    P_gen = bus_table.P_gen_pu;
+    P_load = bus_table.P_load_pu;
+    % Q
+    Q_gen = bus_table.Q_gen_pu;
+    Q_load = bus_table.Q_load_pu;
+    % ZIP values
+    ZIP_ = [bus_table.Z_percent; bus_table.I_percent; bus_table.P_percent];
+
+    % power demanded
+    P_dem = P
+    
+end
