@@ -20,8 +20,7 @@ function [nr_voltage, nr_parameters] = nr_method(parameters_c1, bus_table, YBUS,
     tic;
     while true
         
-        % define jacobian
-        [J_matrix] = jacobian(aux_values, var_angles, var_modules);
+        
         
         nr_error = max(abs(start_values - aux_values));
         if nr_error <= parameters_c1{1} || nr_iter == parameters_c1{2}
