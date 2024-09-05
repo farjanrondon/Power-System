@@ -1,6 +1,8 @@
 
 function [nr_voltage, nr_parameters] = nr_method(parameters_c1, bus_table, YBUS, P_esp, Q_esp)
     
+    aux_table = table(bus_table.bus_i, bus_table.bus_type, bus_table.bus_voltage_pu, bus_table.bus_angle_radians);
+    aux_table.Properties.VariableNames = ["bus_i", "bus_type", "bus_voltage_pu", "bus_angle_radians"];
     % start values
     start_values = [ ...
         bus_table(strcmp(bus_table.bus_type, "PQ"),:).bus_angle_radians; ...
@@ -21,7 +23,7 @@ function [nr_voltage, nr_parameters] = nr_method(parameters_c1, bus_table, YBUS,
     while true
         
         % define jacobian
-        [J_matrix] = jacobian(aux_values, var_angles, var_modules);
+        [J_matrix] = jacobian(aux_table, YBUS, aux_values, var_angles, var_modules);
         
         nr_error = max(abs(start_values - aux_values));
         if nr_error <= parameters_c1{1} || nr_iter == parameters_c1{2}
@@ -29,6 +31,9 @@ function [nr_voltage, nr_parameters] = nr_method(parameters_c1, bus_table, YBUS,
         end
 
         start_values = aux_values;
+        aux_table(strcmp(aux_table.bus_type, "PQ"),:).bus_angle_radians = aux_values(1:length(var_modules));
+        aux_table(strcmp(aux_table.bus_type, "PV"),:).bus_angle_radians = aux_values(length(var_modules)+1:length(var_angles));
+        aux_table(strcmp(aux_table.bus_type, "PQ"),:).bus_voltage_pu = aux_values(length(var_angles)+1:end);
         nr_iter = nr_iter + 1;
 
     end

@@ -38,6 +38,6 @@ end
 
 % newton rhapson method
 if strcmp(parameters_c2{2}, "Y")
-    [nr_voltage, nr_parameters] = nr_method(parameters_c1, bus_table, YBUS, P_esp, Q_esp);
-    [nr_result, nr_flow, nr_balance] = s_calculus(bus_table, lines_table, trx_table, YBUS, P_dem, Q_dem, nr_voltage);
+    %[nr_voltage, nr_parameters] = nr_method(parameters_c1, bus_table, YBUS, P_esp, Q_esp);
+    %[nr_result, nr_flow, nr_balance] = s_calculus(bus_table, lines_table, trx_table, YBUS, P_dem, Q_dem, nr_voltage);
 end
