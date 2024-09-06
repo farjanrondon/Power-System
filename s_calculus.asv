@@ -30,6 +30,11 @@ function [result, s_flow, s_balance] = s_calculus(bus_table, lines_table, trx_ta
     
     S_losses = S_ij_ji(:,1) + S_ij_ji(:,2);
     s_flow_values = [S_ij_ji, S_losses];
+
+    if ~istable(trx_table)
+        trx_table
+    end
+
     s_flow = table( [lines_table.id; trx_table.id], ...
         [lines_table.bus_i; trx_table.bus_i], [lines_table.bus_j; trx_table.bus_j], ...
         real(s_flow_values(:,1)), imag(s_flow_values(:,1)), real(s_flow_values(:,2)), ...
@@ -66,12 +71,16 @@ function [result, s_flow, s_balance] = s_calculus(bus_table, lines_table, trx_ta
     end
 
     % generated power in the buses
-    S_gen = zeros();
+    S_gen = zeros(n_buses, 1);
     for f = 1:1:n_buses
         if strcmp(bus_table.bus_type{f}, "SLACK")
-            S_gen = complex(P_calc, Q_calc) + complex(P_dem, Q_dem);
+            S_gen(f) = complex(P_calc(f), Q_calc(f)) + complex(P_dem(f), Q_dem(f));
         elseif strcmp(bus_table.bus_type{f}, "PV")
-            S_
+            S_gen(f) = complex(bus_table.P_gen_pu(f), Q_calc(f)+Q_dem(f));
+        else
+            S_gen(f) = 0;
+        end
+    end
     
     result = table(bus_table.id, bus_table.bus_i, abs(voltg), ...
         angle(voltg)*180/pi, P_calc, Q_calc, real(S_gen), imag(S_gen), ...

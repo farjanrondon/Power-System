@@ -23,10 +23,18 @@ function [nr_voltage, nr_parameters] = nr_method(parameters_c1, bus_table, YBUS,
     while true
         
         % define jacobian
-        [J_matrix] = jacobian(aux_table, YBUS, aux_values, var_angles, var_modules);
+        [J_matrix] = jacobian(aux_table, YBUS, var_angles, var_modules);
+        % define the functions
+        [delta_P, delta_Q] = delta_functions(P_esp, Q_esp, aux_table, YBUS, var_angles, var_modules);
+
+        % newton raphson method
+        aux_values = aux_values - inv(J_matrix) * [delta_P; delta_Q];
         
         nr_error = max(abs(start_values - aux_values));
         if nr_error <= parameters_c1{1} || nr_iter == parameters_c1{2}
+            aux_table(strcmp(aux_table.bus_type, "PQ"),:).bus_angle_radians = aux_values(1:length(var_modules));
+            aux_table(strcmp(aux_table.bus_type, "PV"),:).bus_angle_radians = aux_values(length(var_modules)+1:length(var_angles));
+            aux_table(strcmp(aux_table.bus_type, "PQ"),:).bus_voltage_pu = aux_values(length(var_angles)+1:end);
             break;
         end
 
@@ -39,7 +47,7 @@ function [nr_voltage, nr_parameters] = nr_method(parameters_c1, bus_table, YBUS,
     end
     nr_time = toc;
     
-    nr_voltage = 0;
-    nr_parameters = 0;
+    nr_voltage = aux_table.bus_voltage_pu .* exp(1j .* aux_table.bus_angle_radians);
+    nr_parameters = {nr_iter; nr_error; nr_time};
     
 end

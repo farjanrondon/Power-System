@@ -43,19 +43,22 @@ function [A_matrix, Y_primitive, YBUS] = ybus_matrix(bus_table, lines_table, trx
     while true
 
         for d = b+1:1:n
-            lines_addsup = [
-                lines_table(lines_table.bus_i==b & lines_table.bus_j==d,:);
-                lines_table(lines_table.bus_i==d & lines_table.bus_j==b,:)
+            lines_addsup = [ ...
+                lines_table(lines_table.bus_i==b & lines_table.bus_j==d,:); ...
+                lines_table(lines_table.bus_i==d & lines_table.bus_j==b,:) ...
                 ];
 
             if istable(trx_table)
-                trx_addsup = [
-                    trx_table(trx_table.bus_i==b & trx_table.bus_j==d,:);
-                    trx_table(trx_table.bus_i==d & trx_table.bus_j==b,:)
+                trx_addsup = [ ...
+                    trx_table(trx_table.bus_i==b & trx_table.bus_j==d,:); ...
+                    trx_table(trx_table.bus_i==d & trx_table.bus_j==b,:) ...
                     ];
+                sum_var = sum(lines_addsup.Y_lines) + sum(trx_addsup.Y_ij);
+            else
+                sum_var = sum(lines_addsup.Y_lines);
             end
 
-            sum_var = sum(lines_addsup.Y_lines) + sum(trx_addsup.Y_ij);
+            %sum_var = sum(lines_addsup.Y_lines) + sum(trx_addsup.Y_ij);
             Y_primitive(idx, idx) = Y_primitive(idx, idx) + sum_var;
             idx = idx + 1;
         end

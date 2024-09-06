@@ -30,6 +30,12 @@ function [result, s_flow, s_balance] = s_calculus(bus_table, lines_table, trx_ta
     
     S_losses = S_ij_ji(:,1) + S_ij_ji(:,2);
     s_flow_values = [S_ij_ji, S_losses];
+
+    if ~istable(trx_table)
+        trx_table = table([], [], []);
+        trx_table.Properties.VariableNames = ["id", "bus_i", "bus_j"];
+    end
+
     s_flow = table( [lines_table.id; trx_table.id], ...
         [lines_table.bus_i; trx_table.bus_i], [lines_table.bus_j; trx_table.bus_j], ...
         real(s_flow_values(:,1)), imag(s_flow_values(:,1)), real(s_flow_values(:,2)), ...
