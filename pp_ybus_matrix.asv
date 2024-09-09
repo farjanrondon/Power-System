@@ -1,0 +1,27 @@
+
+function [ppYBUS] = pp_ybus_matrix(YBUS, gen_data, load_data, bus_table)
+    
+    M_ = YBUS;
+    % M_ is an auxliar matrix
+    n_gens = length(gen_data.bus_i);
+    n_buses = length(bus_table.bus_i);
+    
+    % load buses
+    idx = load_data.bus_i;
+    % adding up the loads
+    for a = 1:1:length(idx)
+        M_(idx(a), idx(a)) = M_(idx(a), idx(a)) + load_data.Y_loads(a);
+    end
+
+    % matrix expantion
+    Y_bb = M_;
+    Y_ba = zeros(n_buses, n_gens);
+    Y_ba = zeros(n_gens, n_buses);
+    Y_aa = diag(1 ./ (1j .* gen_data.X_prime_d_pu));
+    % ppYBUS
+    ppYBUS = [Y_bb, Y_ba; [Y_ab, Y_aa]];
+
+    % new buses
+    new_buses 
+    
+end

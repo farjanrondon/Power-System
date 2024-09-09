@@ -94,7 +94,7 @@ if strcmp(parameters_c3{1}, "Y")
     fprintf("specify the buses between wihch the fault occurs and the time to solve the fault.\n");
     while true
         busi_ = input("bus i: ");
-        % assum busi_ as the closest bus to the fault point in the system
+        % assum busi_ as the closest bus to the fault poin
         busj_ = input("bus j: ");
         if ( ~ismember(busi_, lines_table.bus_i) || ~ismember(busj_, lines_table.bus_i) || ~ismember(busj_, lines_table.bus_j) || ~ismember(busi_, lines_table.bus_j) ) && ( length(lines_table(lines_table.bus_i==busi_ & lines_table.bus_j==busj_,:).id) + length(lines_table(lines_table.bus_i==busj_ & lines_table.bus_j==busi_,:).id) == 0 )
             fprintf("\n\ninvalid bus\n");
@@ -115,9 +115,9 @@ if strcmp(parameters_c3{1}, "Y")
         end
     end
 
-    % knowing bus_ it's possible to determinte the Y_kron matrix during
+    % knowing bus_ it's possible to determinte the electrical power during
     % fault and post-fault.
-    [Yk_f, Yk_af] = y_kron_fault(lines_table, ppYBUS, n_gens, busi_, busj_);
+    [Pe_f, Pe_af] = pe_fault(bus_table, lines_table, ppYBUS, gen_data, n_gens, );
 
     %[] = oscillation_eq(gen_data, Y_kron);
 

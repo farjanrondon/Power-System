@@ -1,0 +1,34 @@
+
+function [Pe_f, Pe_af] = pe_fault(bus_table, lines_table, ppYBUS, gen_data, n_gens, busi_, busj_)
+    
+    % Pe_f --> electrical power during the faut, implies make cero voltage
+    % in the closest bus to the fault point
+    aux1_ppYBUS = ppYBUS;
+    aux1_ppYBUS(busi_,:) = [];
+    aux1_ppYBUS(:,busi_) = [];
+    % kron matrix for this condition (during the fault)
+    [Y_kron_f] = y_kron_matrix(aux1_ppYBUS, n_gens);
+    % electrical power calculus
+    [Pe_f] = pe_calculus(gen_data, Y_kron_f, n_gens);
+    
+    % Pe_af --> electrical power after fault, implies take out of the
+    % operation the line where the fault did happen
+    aux2_ppYBUS = ppYBUS;
+    aux2_ppYBUS(busi_, busj_) = 0;
+    aux2_ppYBUS(busj_, busi_) = 0;
+
+    aux_v1 = [...
+        lines_table(lines_table.bus_i==busi_ & lines_table.bus_j==busj_,:); ...
+        lines_table(lines_table.bus_i==busj_ & lines_table.bus_j==busi_,:) ...
+        ];
+
+    if length(aux_v1.bus_i) > 1
+        to_print = [table((1:1:length(aux_v1.bus_i))'), aux_v1];
+        to_print.Properties.VariableNames{1} = "option";
+        fprintf("there are multiple links between the selected buses, chose the required option for the analysis: \n ");
+        fprintf(to_print)
+    end
+
+
+    
+end

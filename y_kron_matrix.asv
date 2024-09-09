@@ -1,0 +1,9 @@
+
+function [Y_kron] = y_kron_matrix(ppYBUS, n_gens, new_buses)
+    
+    n_buses = length(ppYBUS) - n_gens;
+
+    % sub-arrays
+    
+    
+end
