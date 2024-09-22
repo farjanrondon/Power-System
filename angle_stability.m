@@ -10,7 +10,7 @@ function [gen_data, load_data] = angle_stability(bus_table, volts_, rsult_)
     gen_volts = volts_(gen_buses.bus_i);
     
     % current given by each generator
-    I_gen = conj((gen_rsult.P_i_pu + 1j .* gen_rsult.Q_i_pu) ./ gen_volts);
+    I_gen = conj((gen_rsult.P_gen_pu + 1j .* gen_rsult.Q_gen_pu) ./ gen_volts);
     % femi 
     E_gen = gen_volts + I_gen .* ( 1j .* gen_buses.X_prime_d_pu );
 

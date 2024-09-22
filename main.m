@@ -118,8 +118,8 @@ if strcmp(parameters_c3{1}, "Y")
     % knowing bus_ it's possible to determinte the Y_kron matrix during
     % fault and post-fault.
     [Yk_f, Yk_af] = y_kron_fault(lines_table, ppYBUS, n_gens, busi_, busj_);
-
-    %[] = oscillation_eq(gen_data, Y_kron);
+    
+    % create the equation formula to solve numerically
+    oscillation_eq(parameters_c3, gen_data, Pe_bf, time_, Yk_f, Yk_af, output_file);
 
 end
-

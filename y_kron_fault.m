@@ -28,8 +28,8 @@ function [Y_kron_f, Y_kron_af] = y_kron_fault(lines_table, ppYBUS, n_gens, busi_
         opt = 1;
     end
     
-    aux2_ppYBUS(busi_, busj_) = aux2_ppYBUS(busi_, busj_) - aux_v1.Y_lines(opt);
-    aux2_ppYBUS(busj_, busi_) = aux2_ppYBUS(busj_, busi_) - aux_v1.Y_lines(opt);
+    aux2_ppYBUS(busi_, busj_) = aux2_ppYBUS(busi_, busj_) + aux_v1.Y_lines(opt);
+    aux2_ppYBUS(busj_, busi_) = aux2_ppYBUS(busj_, busi_) + aux_v1.Y_lines(opt);
     aux2_ppYBUS(busi_, busi_) = aux2_ppYBUS(busi_, busi_) - aux_v1.Y_lines(opt) - aux_v1.Y_shunt(opt);
     aux2_ppYBUS(busj_, busj_) = aux2_ppYBUS(busj_, busj_) - aux_v1.Y_lines(opt) - aux_v1.Y_shunt(opt);
 
