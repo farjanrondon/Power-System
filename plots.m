@@ -1,5 +1,8 @@
 
-function plots(velocity_, angle_, output_file)
+function plots(velocity_, angle_, output_file, method_)
+    
+    output_file = output_file{1};
+    output_file = output_file(1:length(output_file)-5) + "_" + method_;
     
     n_plots = length(velocity_(1, 2:end));
     

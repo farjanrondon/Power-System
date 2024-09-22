@@ -14,7 +14,7 @@ function oscillation_eq(parameters_c3, gen_data, Pm, time_d, Yk_f, Yk_af, output
     if strcmp(parameters_c3{2}, "Y")
         
         [heun_speed, heun_angle] = heun_method(gen_data, Pm, Yk_f, Yk_af, t_1, t_2, h, time_d, ang_values, spd_values);
-        plots(heun_speed, heun_angle, output_file);
+        plots(heun_speed, heun_angle, output_file, "heun");
         % plots is the function to plot the velocity and the angle
         
     end
@@ -22,7 +22,7 @@ function oscillation_eq(parameters_c3, gen_data, Pm, time_d, Yk_f, Yk_af, output
     if strcmp(parameters_c3{3}, "Y")
 
         [rk4_speed, rk4_angle] = rk4_method(gen_data, Pm, Yk_f, Yk_af, t_1, t_2, h, time_d, ang_values, spd_values);
-        plots(rk4_speed, rk4_angle, output_file);
+        plots(rk4_speed, rk4_angle, output_file, "rk4");
 
     end
     
