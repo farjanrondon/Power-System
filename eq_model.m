@@ -11,7 +11,10 @@ function eq_eval = eq_model(gen_data, Pm, Ykron, ang_)
     data_gens = gen_(~strcmp(gen_.bus_type, "SLACK"),:);
     data_slck = gen_(strcmp(gen_.bus_type, "SLACK"),:);
 
-    eq_eval = zeros(length(data_gens.bus_i), 1);
+    bus_slack = data_slck.bus_i;
+
+    %eq_eval = zeros(length(data_gens.bus_i), 1);
+    eq_eval = [];
 
     aux_v = [];
     
@@ -19,7 +22,13 @@ function eq_eval = eq_model(gen_data, Pm, Ykron, ang_)
         
         aux_ = 0;
         for b = 1:1:length(gen_.bus_i)
-            aux_ = aux_ + gen_.E_abs(a) * gen_.E_abs(b) * abs(Ykron(a,b)) * cos(angle(Ykron(a,b)) - gen_.E_angle(a) + gen_.E_angle(b));
+            if a ~= bus_slack && b == bus_slack
+                aux_ = aux_ + gen_.E_abs(a) * gen_.E_abs(b) * abs(Ykron(a,b)) * cos(angle(Ykron(a,b)) - gen_.E_angle(a) + gen_.E_angle(b) - gen_.E_angle(b));
+            elseif a == bus_slack && b ~= bus_slack
+                aux_ = aux_ + gen_.E_abs(a) * gen_.E_abs(b) * abs(Ykron(a,b)) * cos(angle(Ykron(a,b)) - gen_.E_angle(a) + gen_.E_angle(a) + gen_.E_angle(b));
+            else
+                aux_ = aux_ + gen_.E_abs(a) * gen_.E_abs(b) * abs(Ykron(a,b)) * cos(angle(Ykron(a,b)) - gen_.E_angle(a) + gen_.E_angle(b));
+            end
         end
 
         if strcmp(gen_.bus_type{a}, "SLACK")
@@ -37,7 +46,8 @@ function eq_eval = eq_model(gen_data, Pm, Ykron, ang_)
         f_o = 60;
 
         aux1_ = ( (pi*f_o*(Hi_ + Hs_)) / (Hi_ * Hs_) ) * ( ((Hs_*data_gens.P_m(c) - Hi_*data_slck.P_m(1)) / (Hi_ + Hs_)) - ((Hs_*aux_v(c) - Hi_*aux_s) / (Hi_ + Hs_)) );
-        eq_eval(c) = aux1_;
+        %eq_eval(c) = aux1_;
+        eq_eval = [eq_eval; aux1_];
         
     end
         

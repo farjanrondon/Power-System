@@ -35,7 +35,7 @@ if strcmp(parameters_c1{4}, "Y") | strcmp(parameters_c2{4}, "Y")
 
     % assign the dc angles to the bus_table and use it as start values
     if strcmp(parameters_c1{4}, "Y")
-        bus_table.bus_angle_radians = dc_result.bus_angle * pi / 180;
+        bus_table.bus_angle_radians = dc_result.bus_angle;
     end
 end
 

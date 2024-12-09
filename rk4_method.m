@@ -27,15 +27,15 @@ function [speed_results, angle_results] = rk4_method(gen_data, P_m, Yk_f, Yk_af,
         K2_ = eq_eval(gen_data, P_m, Ykron, aux1_d);
         aux2_w = aux_spd + 0.5 * K2_ * h;
         aux2_d = aux_ang + 0.5 * aux1_w * h;
-        
+
         K3_ = eq_eval(gen_data, P_m, Ykron, aux2_d);
         aux3_w = aux_spd + K3_ * h;
         aux3_d = aux_ang + aux2_w * h;
 
         K4_ = eq_eval(gen_data, P_m, Ykron, aux3_d);
 
-        K_ = (1/6) .* (K1_ + 2 .* K2_ + 2 .* K3_ + K4_);
-        w_ = (1/6) .* (aux_spd +  2 .* aux1_w + 2 .* aux2_w + aux3_w);
+        K_ = (1/6) * (K1_ + 2*K2_ + 2*K3_ + K4_);
+        w_ = (1/6) * (aux_spd +  2*aux1_w + 2*aux2_w + aux3_w);
 
         aux_spd = aux_spd + K_ * h;
         aux_ang = aux_ang + w_ * h;

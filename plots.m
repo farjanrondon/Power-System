@@ -8,6 +8,7 @@ function plots(velocity_, angle_, output_file, method_)
     
     % velocity subplot
     figure(1);
+    grid on;
     legend1_label = cell(1, n_plots);
     for a = 1:1:n_plots
         plot(velocity_(:,1), velocity_(:,a+1));
@@ -19,6 +20,7 @@ function plots(velocity_, angle_, output_file, method_)
     legend(legend1_label);
     xlabel("time in seconds");
     ylabel("velocity in radians per second");
+    grid on;
     name1_ = output_file + "_velocity_plot.pdf";
     print(name1_, "-dpdf");
 
@@ -35,6 +37,7 @@ function plots(velocity_, angle_, output_file, method_)
     legend(legend2_label);
     xlabel("time in seconds");
     ylabel("angle in degrees");
+    grid on;
     name2_ = output_file + "_angle_plot.pdf";
     print(name2_, "-dpdf");
     

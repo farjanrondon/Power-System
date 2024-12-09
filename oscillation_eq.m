@@ -4,7 +4,7 @@ function oscillation_eq(parameters_c3, gen_data, Pm, time_d, Yk_f, Yk_af, output
     % time values
     h = 1e-3;
     t_1 = 0:h:time_d;
-    t_2 = time_d+h:h:10;
+    t_2 = time_d+h:h:2;
     
     % start values
     ang_values = gen_data(~strcmp(gen_data.bus_type, "SLACK"),:).E_angle - gen_data(strcmp(gen_data.bus_type, "SLACK"),:).E_angle;
